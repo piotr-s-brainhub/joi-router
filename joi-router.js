@@ -245,7 +245,7 @@ function checkValidators(spec) {
 
 function makeBodyParser(spec) {
   return async function parsePayload(ctx, next) {
-    if (ctx.request.body) return await next();
+    if (ctx.request.body && ctx.request.header.connection !== 'close') return await next();
     if (!(spec.validate && spec.validate.type)) return await next();
 
     let opts;
